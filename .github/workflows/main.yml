@@ -26,6 +26,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      # Skip this becuz ubuntu-latest supports below env + AWS CLI Tool
+      # https://github.com/actions/virtual-environments/blob/ubuntu18/20201108.1/images/linux/Ubuntu1804-README.md#cli-tools
       #- name: Set Node version
       #  uses: actions/setup-node@v3
       #  with:
@@ -40,3 +42,10 @@ jobs:
 
       - name: Build
         run: yarn build
+
+      - name: Deploy                  # Upload build file to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+        run: |
+          aws s3 cp --recursive --region ap-northeast-2 build s3://jongho-todo-s3
