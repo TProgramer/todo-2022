@@ -34,7 +34,7 @@ jobs:
       #    node-version: 16.16.0
       #    cache: yarn
           
-      - name: Check Node version
+      - name: Check Node Version
         run: node -v
 
       - name: Install Dependencies
@@ -43,9 +43,20 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Deploy                  # Upload build file to S3
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
-        run: |
-          aws s3 cp --recursive --region ap-northeast-2 build s3://jongho-todo-s3
+      - name: Create ZIP File 
+        run: zip -qq -r ./todo-app-build.zip .
+        shell: bash
+
+      #- name: Deploy                  # Upload build file to S3
+      #  env:
+      #    AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
+      #    AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+      #  run: |
+      #    aws s3 cp --recursive --region ap-northeast-2 build s3://jongho-todo-s3
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
