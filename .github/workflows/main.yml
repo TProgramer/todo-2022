@@ -46,13 +46,6 @@ jobs:
       - name: Create ZIP File 
         run: zip -qq -r ./todo-app-build.zip .
         shell: bash
-
-      #- name: Deploy                  # Upload build file to S3
-      #  env:
-      #    AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
-      #    AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
-      #  run: |
-      #    aws s3 cp --recursive --region ap-northeast-2 build s3://jongho-todo-s3
       
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -60,3 +53,17 @@ jobs:
           aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Upload to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+        run: |
+          aws s3 cp --region ap-northeast-2 ./todo-app-build.zip s3://jongho-todo-s3/todo-app/todo-app-build.zip
+          
+      - name: Deploy to EC2
+        run: aws deploy create-deployment
+          --application-name Jongho-todo-deploy
+          --deployment-config-name CodeDeployDefault.AllAtOnce
+          --deployment-group-name Jongho-todo-server
+          --s3-location bucket=jongho-todo-s3,key=/todo-app-build.zip,bundleType=zip
