@@ -66,4 +66,4 @@ jobs:
           --application-name todo-codedeploy
           --deployment-config-name CodeDeployDefault.AllAtOnce
           --deployment-group-name todo-server
-          --s3-location bucket=todo-app-s3,key=/todo-app/todo-app-build.zip,bundleType=zip
+          --s3-location bucket=nl-todo-app-s3,key=/todo-app/todo-app-build.zip,bundleType=zip
