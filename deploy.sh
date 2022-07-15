@@ -9,6 +9,7 @@ REPOSITORY=/usr/ec2-user/todo-app/
 cd $REPOSITORY
 
 npm install pm2 -g
+npm install
 npm run build
 pm2 kill
 pm2 start npm --name "dev" -- start
