@@ -59,11 +59,11 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
-          aws s3 cp --region ap-northeast-2 ./todo-app-build.zip s3://nl-todo-app-s3/todo-app/todo-app-build.zip
+          aws s3 cp --region ap-northeast-2 ./todo-app-build.zip s3://jongho-todo-s3/todo-app/todo-app-build.zip
           
       - name: Deploy to EC2
         run: aws deploy create-deployment
-          --application-name todo-codedeploy
+          --application-name Jongho-todo-deploy
           --deployment-config-name CodeDeployDefault.AllAtOnce
-          --deployment-group-name todo-server
-          --s3-location bucket=nl-todo-app-s3,key=todo-app/todo-app-build.zip,bundleType=zip
+          --deployment-group-name Jongho-todo-server
+          --s3-location bucket=jongho-todo-s3,key=todo-app/todo-app-build.zip,bundleType=zip
