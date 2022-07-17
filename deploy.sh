@@ -5,12 +5,12 @@ echo "> FE 배포"
 # 어떤 작업을 진행하는 지는 본인이 지정하면 될 것 같습니다.
 # 저는 별도의 작업을 진행하지 않았습니다. 
 # sudo cp -rf /home/ubuntu/deploy-fe/dist/* /var/www/html
-REPOSITORY=/usr/ec2-user/todo-app/
+REPOSITORY=/home/ec2-user/todo-app/
 cd $REPOSITORY
 
-npm install pm2 -g
-npm install
-npm run build
-pm2 kill
-pm2 start npm --name "dev" -- start
-pm2 list
+#npm install pm2 -g
+#npm install
+#npm run build
+#pm2 kill
+#pm2 start npm --name "dev" -- start
+#pm2 list
